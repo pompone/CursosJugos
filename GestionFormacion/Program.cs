@@ -58,13 +58,68 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Endpoint manual para inicializar roles y usuarios.
+// Endpoint manual para crear el usuario administrador.
 // Usarlo una sola vez después del deploy.
-app.MapGet("/init-db", async (IServiceProvider services) =>
+app.MapGet("/init-db", async (
+    UserManager<ApplicationUser> userManager,
+    RoleManager<IdentityRole> roleManager) =>
 {
-    await SeedData.InicializarRolesYUsuarios(services);
+    try
+    {
+        // 1. Verificar/crear rol Admin
+        if (!await roleManager.RoleExistsAsync("Admin"))
+        {
+            var resultadoRol = await roleManager.CreateAsync(new IdentityRole("Admin"));
 
-    return Results.Ok("Base de datos inicializada correctamente.");
+            if (!resultadoRol.Succeeded)
+            {
+                return Results.BadRequest(resultadoRol.Errors);
+            }
+        }
+
+        // 2. Verificar/crear usuario ADMIN
+        var admin = await userManager.FindByNameAsync("ADMIN");
+
+        if (admin == null)
+        {
+            admin = new ApplicationUser
+            {
+                UserName = "ADMIN",
+                Email = "admin@gestionformacion.local",
+                EmailConfirmed = true,
+                DebeCambiarPassword = false,
+                SolicitoResetPassword = false,
+                FechaSolicitudReset = null
+            };
+
+            var resultadoUsuario = await userManager.CreateAsync(admin, "Admin123!");
+
+            if (!resultadoUsuario.Succeeded)
+            {
+                return Results.BadRequest(resultadoUsuario.Errors);
+            }
+        }
+
+        // 3. Verificar/asignar rol Admin al usuario
+        if (!await userManager.IsInRoleAsync(admin, "Admin"))
+        {
+            var resultadoRolUsuario = await userManager.AddToRoleAsync(admin, "Admin");
+
+            if (!resultadoRolUsuario.Succeeded)
+            {
+                return Results.BadRequest(resultadoRolUsuario.Errors);
+            }
+        }
+
+        return Results.Ok("Usuario ADMIN creado correctamente.");
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem(
+            title: "Error al crear usuario ADMIN",
+            detail: ex.ToString()
+        );
+    }
 });
 
 app.MapControllerRoute(
