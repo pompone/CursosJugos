@@ -8,12 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
-// Usar PostgreSQL / Supabase
+// PostgreSQL / Supabase
 var connectionString = builder.Configuration.GetConnectionString("PostgresConnection")
     ?? throw new InvalidOperationException("Connection string 'PostgresConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorCodesToAdd: null);
+    }));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -28,17 +34,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Aplica migraciones y crea roles/usuarios iniciales
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    await context.Database.MigrateAsync();
-
-    await SeedData.InicializarRolesYUsuarios(services);
-}
-
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -49,6 +44,8 @@ else
     app.UseHsts();
 }
 
+// En Render no conviene forzar redirección HTTPS desde la app.
+// Render ya maneja HTTPS externamente.
 if (app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
@@ -60,6 +57,16 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Endpoint manual para inicializar la base después de que la app ya esté viva.
+// Usarlo una sola vez y luego, si querés, lo borramos.
+app.MapGet("/init-db", async (ApplicationDbContext context, IServiceProvider services) =>
+{
+    await context.Database.MigrateAsync();
+    await SeedData.InicializarRolesYUsuarios(services);
+
+    return Results.Ok("Base de datos inicializada correctamente.");
+});
 
 app.MapControllerRoute(
     name: "default",
