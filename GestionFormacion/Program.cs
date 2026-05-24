@@ -32,11 +32,12 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+// No ejecutar SeedData en Render.
+// Los usuarios se cargarán manualmente en Supabase.
+if (app.Environment.IsDevelopment())
 {
-    // Base ya creada manualmente en Supabase.
-    // SeedData desactivado temporalmente para evitar timeout en Render.
-    // await SeedData.InicializarRolesYUsuarios(scope.ServiceProvider);
+    using var scope = app.Services.CreateScope();
+    await SeedData.InicializarRolesYUsuarios(scope.ServiceProvider);
 }
 
 if (app.Environment.IsDevelopment())
@@ -51,9 +52,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
