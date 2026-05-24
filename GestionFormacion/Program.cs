@@ -58,11 +58,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Endpoint manual para inicializar la base después de que la app ya esté viva.
-// Usarlo una sola vez y luego, si querés, lo borramos.
-app.MapGet("/init-db", async (ApplicationDbContext context, IServiceProvider services) =>
+// Endpoint manual para inicializar roles y usuarios.
+// Usarlo una sola vez después del deploy.
+app.MapGet("/init-db", async (IServiceProvider services) =>
 {
-    await context.Database.MigrateAsync();
     await SeedData.InicializarRolesYUsuarios(services);
 
     return Results.Ok("Base de datos inicializada correctamente.");
