@@ -32,11 +32,8 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// No ejecutar SeedData en Render.
-// Los usuarios se cargarán manualmente en Supabase.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    using var scope = app.Services.CreateScope();
     await SeedData.InicializarRolesYUsuarios(scope.ServiceProvider);
 }
 
@@ -52,7 +49,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
