@@ -34,7 +34,11 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
+    Console.WriteLine("INICIANDO SEED DATA...");
+
     await SeedData.InicializarRolesYUsuarios(scope.ServiceProvider);
+
+    Console.WriteLine("SEED DATA FINALIZADO.");
 }
 
 if (app.Environment.IsDevelopment())
