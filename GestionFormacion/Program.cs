@@ -32,16 +32,15 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// TEMPORALMENTE DESACTIVADO PARA PROBAR ARRANQUE EN RENDER
-// using (var scope = app.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-//
-//     var db = services.GetRequiredService<ApplicationDbContext>();
-//     await db.Database.EnsureCreatedAsync();
-//
-//     await SeedData.InicializarRolesYUsuarios(services);
-// }
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var db = services.GetRequiredService<ApplicationDbContext>();
+    await db.Database.MigrateAsync();
+
+    // await SeedData.InicializarRolesYUsuarios(services);
+}
 
 if (app.Environment.IsDevelopment())
 {
