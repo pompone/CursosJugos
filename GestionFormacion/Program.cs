@@ -32,13 +32,12 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
-    Console.WriteLine("INICIANDO SEED DATA...");
-
-    await SeedData.InicializarRolesYUsuarios(scope.ServiceProvider);
-
-    Console.WriteLine("SEED DATA FINALIZADO.");
+    using (var scope = app.Services.CreateScope())
+    {
+        await SeedData.InicializarRolesYUsuarios(scope.ServiceProvider);
+    }
 }
 
 if (app.Environment.IsDevelopment())
