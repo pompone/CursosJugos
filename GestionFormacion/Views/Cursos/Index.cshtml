@@ -1,0 +1,57 @@
+﻿@model IEnumerable<GestionFormacion.Models.Curso>
+
+@{
+    ViewData["Title"] = "Cursos";
+}
+
+<h1>Cursos</h1>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Crear nuevo curso</a>
+    </p>
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Curso</th>
+            <th>Descripción</th>
+            <th>Fecha de inicio</th>
+            <th>Fecha de fin</th>
+            <th>Horas</th>
+            <th>Activo</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.NombreCurso)</td>
+                <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                <td>@item.FechaInicio.ToShortDateString()</td>
+                <td>@item.FechaFin.ToShortDateString()</td>
+                <td>@Html.DisplayFor(modelItem => item.Horas)</td>
+                <td>@Html.DisplayFor(modelItem => item.Activo)</td>
+
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Editar</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalles</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                    }
+                    else if (User.IsInRole("Empleado"))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                            Ver detalles
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,115 @@
+﻿@model IEnumerable<GestionFormacion.Controllers.UsuarioRolViewModel>
+
+@{
+    ViewData["Title"] = "Administrar usuarios";
+    var busqueda = Context.Request.Query["busqueda"].ToString();
+}
+
+<h1>Administrar usuarios</h1>
+
+<p class="text-muted">
+    Desde esta pantalla el administrador puede consultar los usuarios del sistema y asignar o quitar permisos de administrador.
+</p>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["Mensaje"]
+    </div>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-5">
+        <input type="text"
+               name="busqueda"
+               value="@busqueda"
+               class="form-control"
+               placeholder="Buscar por legajo, nombre o apellido" />
+    </div>
+
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">
+            Buscar
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Limpiar
+        </a>
+    </div>
+</form>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-light">
+        <h4 class="mb-0">Usuarios registrados</h4>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Legajo</th>
+                    <th>Nombre y apellido</th>
+                    <th>Roles actuales</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var usuario in Model)
+                {
+                    <tr>
+                        <td>@usuario.UserName</td>
+
+                        <td>@usuario.NombreCompleto</td>
+
+                        <td>
+                            @if (usuario.Roles.Contains("Admin"))
+                            {
+                                <span class="badge bg-success">
+                                    @usuario.Roles
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    @usuario.Roles
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (!usuario.Roles.Contains("Admin"))
+                            {
+                                <form asp-action="HacerAdmin" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@usuario.Id" />
+
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        Hacer ADMIN
+                                    </button>
+                                </form>
+                            }
+                            else if (usuario.UserName != "ADMIN")
+                            {
+                                <form asp-action="QuitarAdmin" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@usuario.Id" />
+
+                                    <button type="submit" class="btn btn-warning btn-sm">
+                                        Quitar ADMIN
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">
+                                    ADMIN principal
+                                </span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
