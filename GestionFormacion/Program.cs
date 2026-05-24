@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Usar PostgreSQL / Supabase
 var connectionString = builder.Configuration.GetConnectionString("PostgresConnection")
     ?? throw new InvalidOperationException("Connection string 'PostgresConnection' not found.");
@@ -46,7 +49,11 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseStaticFiles();
 
 app.UseRouting();
