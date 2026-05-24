@@ -34,9 +34,9 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-
-    await SeedData.InicializarRolesYUsuarios(services);
+    // Base ya creada manualmente en Supabase.
+    // SeedData desactivado temporalmente para evitar timeout en Render.
+    // await SeedData.InicializarRolesYUsuarios(scope.ServiceProvider);
 }
 
 if (app.Environment.IsDevelopment())
