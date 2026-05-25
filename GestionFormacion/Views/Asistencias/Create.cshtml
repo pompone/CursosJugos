@@ -1,0 +1,68 @@
+﻿@model GestionFormacion.Models.Asistencia
+
+@{
+    ViewData["Title"] = "Registrar asistencia";
+}
+
+<h1>Registrar asistencia</h1>
+
+<p class="text-muted">
+    Desde esta pantalla el administrador puede registrar la asistencia de un empleado a un curso.
+</p>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-light">
+        <h4 class="mb-0">Nueva asistencia</h4>
+    </div>
+
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="EmpleadoId" class="form-label">Empleado</label>
+                <select asp-for="EmpleadoId" class="form-select" asp-items="ViewBag.EmpleadoId">
+                    <option value="">Seleccione un empleado</option>
+                </select>
+                <span asp-validation-for="EmpleadoId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CursoId" class="form-label">Curso</label>
+                <select asp-for="CursoId" class="form-select" asp-items="ViewBag.CursoId">
+                    <option value="">Seleccione un curso</option>
+                </select>
+                <span asp-validation-for="CursoId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Fecha" class="form-label">Fecha</label>
+                <input asp-for="Fecha" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-4">
+                <input class="form-check-input" asp-for="Asistio" />
+                <label class="form-check-label" asp-for="Asistio">
+                    El empleado asistió al curso
+                </label>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Guardar asistencia
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Volver
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+@if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <section class="dashboard-hero">
+        <div class="hero-slide slide-1"></div>
+        <div class="hero-slide slide-2"></div>
+        <div class="hero-slide slide-3"></div>
+
+        <div class="hero-contenido">
+            <h1>Gestión de Formación</h1>
+            <p>Plataforma interna de capacitación del personal - Jugos S.A.</p>
+        </div>
+    </section>
+
+    <div class="opciones-menu">
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="boton-menu" asp-controller="Empleados" asp-action="Index">
+                Gestionar empleados
+            </a>
+
+            <a class="boton-menu" asp-controller="Usuarios" asp-action="Index">
+                Administrar usuarios
+            </a>
+
+            <a class="boton-menu" asp-controller="Cursos" asp-action="Index">
+                Gestionar cursos
+            </a>
+
+            <a class="boton-menu" asp-controller="Inscripciones" asp-action="Index">
+                Ver inscripciones
+            </a>
+
+            <a class="boton-menu" asp-controller="Asistencias" asp-action="Index">
+                Gestionar asistencias
+            </a>
+
+            <a class="boton-menu boton-principal" asp-controller="PasswordResets" asp-action="Index">
+                Solicitudes de reseteo
+            </a>
+        }
+        else if (User.IsInRole("Empleado"))
+        {
+            <a class="boton-menu" asp-controller="Inscripciones" asp-action="Index">
+                Mis cursos asignados
+            </a>
+
+            <a class="boton-menu" asp-controller="Cursos" asp-action="Index">
+                Cursos disponibles
+            </a>
+
+            <a class="boton-menu boton-principal" asp-controller="Cursos" asp-action="Solicitar">
+                Solicitar capacitación
+            </a>
+
+            <a class="boton-menu" asp-controller="Inscripciones" asp-action="Index">
+                Historial de capacitaciones
+            </a>
+
+            <a class="boton-menu" asp-controller="Asistencias" asp-action="Index">
+                Mis asistencias
+            </a>
+
+            <a class="boton-menu" asp-controller="Home" asp-action="Privacy">
+                Ayuda / Contacto
+            </a>
+        }
+
+    </div>
+}
