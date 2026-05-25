@@ -10,7 +10,7 @@
         public int CursoId { get; set; }
         public Curso Curso { get; set; }
 
-        public DateTime FechaInscripcion { get; set; } = DateTime.Now;
+        public DateTime FechaInscripcion { get; set; }
 
         public string Estado { get; set; } = "Pendiente";
     }
