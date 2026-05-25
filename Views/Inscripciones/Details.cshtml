@@ -1,0 +1,65 @@
+﻿@model GestionFormacion.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Detalle de inscripción";
+}
+
+<h1>Detalle de inscripción</h1>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-light">
+        <h4 class="mb-0">Información de la solicitud</h4>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Empleado</dt>
+            <dd class="col-sm-9">
+                @Model.Empleado.Apellido, @Model.Empleado.Nombre
+            </dd>
+
+            <dt class="col-sm-3">Curso</dt>
+            <dd class="col-sm-9">
+                @Model.Curso.NombreCurso
+            </dd>
+
+            <dt class="col-sm-3">Fecha de inscripción</dt>
+            <dd class="col-sm-9">
+                @Model.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")
+            </dd>
+
+            <dt class="col-sm-3">Estado</dt>
+            <dd class="col-sm-9">
+                @if (Model.Estado == "Pendiente")
+                {
+                    <span class="badge bg-warning text-dark">Pendiente</span>
+                }
+                else if (Model.Estado == "Aprobada")
+                {
+                    <span class="badge bg-success">Aprobada</span>
+                }
+                else if (Model.Estado == "Rechazada")
+                {
+                    <span class="badge bg-danger">Rechazada</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">@Model.Estado</span>
+                }
+            </dd>
+        </dl>
+    </div>
+
+    <div class="card-footer d-flex gap-2">
+        <a asp-action="Index" class="btn btn-secondary">
+            Volver
+        </a>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                Editar
+            </a>
+        }
+    </div>
+</div>

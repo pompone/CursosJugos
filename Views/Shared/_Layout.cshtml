@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Gestión de Formación</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GestionFormacion.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+
+    <header class="topbar-jugos">
+        <div class="topbar-content">
+
+            <div class="brand-area">
+                <a href="https://www.jugossa.com/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="Ir al sitio oficial de Jugos S.A.">
+                    <img src="~/img/logo-jugos.png"
+                         alt="Jugos S.A."
+                         class="logo-jugos" />
+                </a>
+            </div>
+
+            <div class="title-area">
+                <h1>Gestión de Formación</h1>
+                <p>Plataforma interna de capacitaciones - Jugos S.A.</p>
+
+                <nav class="menu-jugos">
+                    <a asp-controller="Home" asp-action="Index">Inicio</a>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Empleados" asp-action="Index">Gestionar empleados</a>
+                        <a asp-controller="Usuarios" asp-action="Index">Administrar usuarios</a>
+                        <a asp-controller="Cursos" asp-action="Index">Gestionar cursos</a>
+                        <a asp-controller="Inscripciones" asp-action="Index">Ver inscripciones</a>
+                        <a asp-controller="Asistencias" asp-action="Index">Registrar asistencias</a>
+                        <a asp-controller="PasswordResets" asp-action="Index">Solicitudes de reseteo</a>
+                    }
+                    else if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Empleado"))
+                    {
+                        <a asp-controller="Cursos" asp-action="Solicitar">Solicitar capacitación</a>
+                        <a asp-controller="Cursos" asp-action="Index">Cursos disponibles</a>
+                        <a asp-controller="Inscripciones" asp-action="Index">Mis inscripciones</a>
+                    }
+                </nav>
+            </div>
+
+            <div class="logout-area">
+                <partial name="_LoginPartial" />
+            </div>
+
+        </div>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - Gestión de Formación - Alejandro M. Pompone
+           
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

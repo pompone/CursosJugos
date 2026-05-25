@@ -1,0 +1,152 @@
+﻿@model IEnumerable<GestionFormacion.Models.Inscripcion>
+
+@{
+    ViewData["Title"] = "Inscripciones";
+
+    var estadoSeleccionado = Context.Request.Query["estado"].ToString();
+    var busqueda = Context.Request.Query["busqueda"].ToString();
+}
+
+<h1>Inscripciones</h1>
+
+@if (User.IsInRole("Admin"))
+{
+    <p class="text-muted">
+        Desde esta pantalla se pueden revisar las solicitudes de capacitación realizadas por los empleados.
+    </p>
+}
+else if (User.IsInRole("Empleado"))
+{
+    <p class="text-muted">
+        Aquí puede consultar el estado de sus solicitudes de capacitación.
+    </p>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input type="text"
+               name="busqueda"
+               value="@busqueda"
+               class="form-control"
+               placeholder="Buscar por empleado o curso" />
+    </div>
+
+    <div class="col-md-3">
+        <select name="estado" class="form-select">
+            <option value="">Todos los estados</option>
+
+            @if (estadoSeleccionado == "Pendiente")
+            {
+                <option value="Pendiente" selected>Pendiente</option>
+            }
+            else
+            {
+                <option value="Pendiente">Pendiente</option>
+            }
+
+            @if (estadoSeleccionado == "Aprobada")
+            {
+                <option value="Aprobada" selected>Aprobada</option>
+            }
+            else
+            {
+                <option value="Aprobada">Aprobada</option>
+            }
+
+            @if (estadoSeleccionado == "Rechazada")
+            {
+                <option value="Rechazada" selected>Rechazada</option>
+            }
+            else
+            {
+                <option value="Rechazada">Rechazada</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <a asp-action="Index" class="btn btn-secondary">Limpiar</a>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Empleado</th>
+            <th>Curso</th>
+            <th>Fecha de inscripción</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Empleado.Apellido, @item.Empleado.Nombre</td>
+                <td>@item.Curso.NombreCurso</td>
+                <td>@item.FechaInscripcion.ToShortDateString()</td>
+                <td>
+                    @if (item.Estado == "Pendiente")
+                    {
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    }
+                    else if (item.Estado == "Aprobada")
+                    {
+                        <span class="badge bg-success">Aprobada</span>
+                    }
+                    else if (item.Estado == "Rechazada")
+                    {
+                        <span class="badge bg-danger">Rechazada</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">@item.Estado</span>
+                    }
+                </td>
+
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @if (item.Estado == "Pendiente")
+                        {
+                            <form asp-action="Aprobar" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-success">
+                                    Aprobar
+                                </button>
+                            </form>
+
+                            <form asp-action="Rechazar" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    Rechazar
+                                </button>
+                            </form>
+                        }
+
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                            Detalles
+                        </a>
+
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                            Editar
+                        </a>
+
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                            Eliminar
+                        </a>
+                    }
+                    else if (User.IsInRole("Empleado"))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">
+                            Detalles
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

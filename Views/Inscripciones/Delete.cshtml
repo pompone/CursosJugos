@@ -1,0 +1,53 @@
+﻿@model GestionFormacion.Models.Inscripcion
+
+@{
+    ViewData["Title"] = "Eliminar inscripción";
+}
+
+<h1>Eliminar inscripción</h1>
+
+<div class="alert alert-danger mt-4">
+    <strong>Atención:</strong> está por eliminar este registro de inscripción. Esta acción no se puede deshacer.
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-light">
+        <h4 class="mb-0">Datos de la inscripción</h4>
+    </div>
+
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Empleado</dt>
+            <dd class="col-sm-9">
+                @Model.Empleado.Apellido, @Model.Empleado.Nombre
+            </dd>
+
+            <dt class="col-sm-3">Curso</dt>
+            <dd class="col-sm-9">
+                @Model.Curso.NombreCurso
+            </dd>
+
+            <dt class="col-sm-3">Fecha de inscripción</dt>
+            <dd class="col-sm-9">
+                @Model.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")
+            </dd>
+
+            <dt class="col-sm-3">Estado</dt>
+            <dd class="col-sm-9">@Model.Estado</dd>
+        </dl>
+    </div>
+
+    <div class="card-footer">
+        <form asp-action="Delete" method="post" class="d-inline">
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit" class="btn btn-danger">
+                Confirmar eliminación
+            </button>
+        </form>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </div>
+</div>
