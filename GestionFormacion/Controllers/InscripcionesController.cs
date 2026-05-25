@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ namespace GestionFormacion.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string estado, string busqueda)
+        public async Task<IActionResult> Index(string? estado, string? busqueda)
         {
             var consulta = _context.Inscripciones
                 .Include(i => i.Curso)
@@ -29,7 +29,7 @@ namespace GestionFormacion.Controllers
 
             if (User.IsInRole("Empleado"))
             {
-                string legajo = User.Identity?.Name;
+                string? legajo = User.Identity?.Name;
                 consulta = consulta.Where(i => i.Empleado.Legajo == legajo);
             }
 
@@ -61,7 +61,8 @@ namespace GestionFormacion.Controllers
 
             if (inscripcion == null) return NotFound();
 
-            if (User.IsInRole("Empleado") && inscripcion.Empleado.Legajo != User.Identity?.Name)
+            if (User.IsInRole("Empleado") &&
+                inscripcion.Empleado.Legajo != User.Identity?.Name)
             {
                 return Forbid();
             }
@@ -89,7 +90,7 @@ namespace GestionFormacion.Controllers
             {
                 CursoId = curso.Id,
                 Curso = curso,
-                FechaInscripcion = DateTime.Now,
+                FechaInscripcion = DateTime.UtcNow,
                 Estado = "Pendiente"
             };
 
@@ -101,7 +102,7 @@ namespace GestionFormacion.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CursoId")] Inscripcion inscripcion)
         {
-            string legajo = User.Identity?.Name;
+            string? legajo = User.Identity?.Name;
 
             if (string.IsNullOrEmpty(legajo))
             {
@@ -137,7 +138,7 @@ namespace GestionFormacion.Controllers
             }
 
             inscripcion.EmpleadoId = empleado.Id;
-            inscripcion.FechaInscripcion = DateTime.Now;
+            inscripcion.FechaInscripcion = DateTime.UtcNow;
             inscripcion.Estado = "Pendiente";
 
             _context.Add(inscripcion);
@@ -173,6 +174,9 @@ namespace GestionFormacion.Controllers
             {
                 try
                 {
+                    inscripcion.FechaInscripcion =
+                        DateTime.SpecifyKind(inscripcion.FechaInscripcion, DateTimeKind.Utc);
+
                     _context.Update(inscripcion);
                     await _context.SaveChangesAsync();
                 }
