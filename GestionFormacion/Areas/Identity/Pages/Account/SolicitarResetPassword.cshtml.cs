@@ -42,16 +42,16 @@ namespace GestionFormacion.Areas.Identity.Pages.Account
 
             if (usuario == null)
             {
-                Mensaje = "Si el legajo ingresado existe, la solicitud ser· revisada por el administrador.";
+                Mensaje = "Si el legajo ingresado existe, la solicitud ser√° revisada por el administrador.";
                 return Page();
             }
 
             usuario.SolicitoResetPassword = true;
-            usuario.FechaSolicitudReset = DateTime.Now;
+            usuario.FechaSolicitudReset = DateTime.UtcNow;
 
             await _userManager.UpdateAsync(usuario);
 
-            Mensaje = "Solicitud enviada correctamente. El administrador deber· aprobar el reseteo.";
+            Mensaje = "Solicitud enviada correctamente. El administrador deber√° aprobar el reseteo.";
 
             return Page();
         }
