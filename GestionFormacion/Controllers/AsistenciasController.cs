@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,6 @@ namespace GestionFormacion.Controllers
             _context = context;
         }
 
-        // GET: Asistencias
         public async Task<IActionResult> Index()
         {
             var consulta = _context.Asistencias
@@ -30,31 +29,23 @@ namespace GestionFormacion.Controllers
 
             if (User.IsInRole("Empleado"))
             {
-                string legajo = User.Identity?.Name;
-
+                string? legajo = User.Identity?.Name;
                 consulta = consulta.Where(a => a.Empleado.Legajo == legajo);
             }
 
             return View(await consulta.ToListAsync());
         }
 
-        // GET: Asistencias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var asistencia = await _context.Asistencias
                 .Include(a => a.Curso)
                 .Include(a => a.Empleado)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (asistencia == null)
-            {
-                return NotFound();
-            }
+            if (asistencia == null) return NotFound();
 
             if (User.IsInRole("Empleado") &&
                 asistencia.Empleado.Legajo != User.Identity?.Name)
@@ -65,25 +56,23 @@ namespace GestionFormacion.Controllers
             return View(asistencia);
         }
 
-        // GET: Asistencias/Create
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "NombreCurso");
             ViewData["EmpleadoId"] = new SelectList(_context.Empleados, "Id", "Apellido");
-
             return View();
         }
 
-        // POST: Asistencias/Create
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(
-            [Bind("Id,EmpleadoId,CursoId,Fecha,Asistio")] Asistencia asistencia)
+        public async Task<IActionResult> Create([Bind("Id,EmpleadoId,CursoId,Fecha,Asistio")] Asistencia asistencia)
         {
             if (ModelState.IsValid)
             {
+                asistencia.Fecha = DateTime.SpecifyKind(asistencia.Fecha, DateTimeKind.Utc);
+
                 _context.Add(asistencia);
                 await _context.SaveChangesAsync();
 
@@ -96,21 +85,14 @@ namespace GestionFormacion.Controllers
             return View(asistencia);
         }
 
-        // GET: Asistencias/Edit/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var asistencia = await _context.Asistencias.FindAsync(id);
 
-            if (asistencia == null)
-            {
-                return NotFound();
-            }
+            if (asistencia == null) return NotFound();
 
             ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "NombreCurso", asistencia.CursoId);
             ViewData["EmpleadoId"] = new SelectList(_context.Empleados, "Id", "Apellido", asistencia.EmpleadoId);
@@ -118,23 +100,19 @@ namespace GestionFormacion.Controllers
             return View(asistencia);
         }
 
-        // POST: Asistencias/Edit/5
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(
-            int id,
-            [Bind("Id,EmpleadoId,CursoId,Fecha,Asistio")] Asistencia asistencia)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,EmpleadoId,CursoId,Fecha,Asistio")] Asistencia asistencia)
         {
-            if (id != asistencia.Id)
-            {
-                return NotFound();
-            }
+            if (id != asistencia.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    asistencia.Fecha = DateTime.SpecifyKind(asistencia.Fecha, DateTimeKind.Utc);
+
                     _context.Update(asistencia);
                     await _context.SaveChangesAsync();
                 }
@@ -157,29 +135,21 @@ namespace GestionFormacion.Controllers
             return View(asistencia);
         }
 
-        // GET: Asistencias/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var asistencia = await _context.Asistencias
                 .Include(a => a.Curso)
                 .Include(a => a.Empleado)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (asistencia == null)
-            {
-                return NotFound();
-            }
+            if (asistencia == null) return NotFound();
 
             return View(asistencia);
         }
 
-        // POST: Asistencias/Delete/5
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
