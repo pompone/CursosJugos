@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Selección de base de datos según el entorno
+// SelecciÃ³n de base de datos segÃºn el entorno
 if (builder.Environment.IsDevelopment())
 {
     // LOCAL: SQLite
@@ -17,10 +17,19 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    // PRODUCCIÓN: PostgreSQL / Neon
-    var connectionString = builder.Configuration.GetConnectionString("PostgresConnection")
-        ?? builder.Configuration["PostgresConnection"]
-        ?? throw new InvalidOperationException("Connection string 'PostgresConnection' not found.");
+    // PRODUCCIÃ“N: PostgreSQL / Neon
+    var connectionString = builder.Configuration.GetConnectionString("PostgresConnection");
+
+    // Si estÃ¡ vacÃ­o en appsettings.json, usar variable de entorno de Render
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        connectionString = builder.Configuration["PostgresConnection"];
+    }
+
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        throw new InvalidOperationException("Connection string 'PostgresConnection' not found.");
+    }
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseNpgsql(connectionString));
