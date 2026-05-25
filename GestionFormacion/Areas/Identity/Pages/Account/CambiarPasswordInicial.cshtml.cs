@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace GestionFormacion.Areas.Identity.Pages.Account
 {
     [Authorize]
@@ -28,18 +29,18 @@ namespace GestionFormacion.Areas.Identity.Pages.Account
         {
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Contraseña actual")]
+            [Display(Name = "ContraseÃ±a actual")]
             public string PasswordActual { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Nueva contraseña")]
+            [Display(Name = "Nueva contraseÃ±a")]
             public string PasswordNueva { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
             [Compare("PasswordNueva")]
-            [Display(Name = "Confirmar contraseña")]
+            [Display(Name = "Confirmar contraseÃ±a")]
             public string ConfirmarPassword { get; set; }
         }
 
