@@ -1,4 +1,4 @@
-﻿@model GestionFormacion.Models.Inscripcion
+@model GestionFormacion.Models.Inscripcion
 
 @{
     ViewData["Title"] = "Editar inscripción";
@@ -16,6 +16,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="FechaInscripcion" />
 
             <div class="mb-3">
                 <label asp-for="EmpleadoId" class="form-label">Empleado</label>
@@ -30,9 +31,10 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="FechaInscripcion" class="form-label">Fecha de inscripción</label>
-                <input asp-for="FechaInscripcion" class="form-control" />
-                <span asp-validation-for="FechaInscripcion" class="text-danger"></span>
+                <label class="form-label">Fecha de solicitud</label>
+                <input class="form-control"
+                       value="@Model.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")"
+                       readonly />
             </div>
 
             <div class="mb-3">
