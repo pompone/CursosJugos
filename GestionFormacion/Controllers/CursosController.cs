@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +75,9 @@ namespace GestionFormacion.Controllers
         {
             if (ModelState.IsValid)
             {
+                curso.FechaInicio = DateTime.SpecifyKind(curso.FechaInicio, DateTimeKind.Utc);
+                curso.FechaFin = DateTime.SpecifyKind(curso.FechaFin, DateTimeKind.Utc);
+
                 _context.Add(curso);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -117,6 +120,9 @@ namespace GestionFormacion.Controllers
             {
                 try
                 {
+                    curso.FechaInicio = DateTime.SpecifyKind(curso.FechaInicio, DateTimeKind.Utc);
+                    curso.FechaFin = DateTime.SpecifyKind(curso.FechaFin, DateTimeKind.Utc);
+
                     _context.Update(curso);
                     await _context.SaveChangesAsync();
                 }
