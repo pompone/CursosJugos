@@ -1,4 +1,4 @@
-﻿using GestionFormacion.Models;
+using GestionFormacion.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace GestionFormacion.Data
@@ -20,52 +20,32 @@ namespace GestionFormacion.Data
                 }
             }
 
-            string usuarioAdmin = "ADMIN";
-            string emailAdmin = "admin@gestionformacion.local";
-            string passwordAdmin = "Admin123!";
+            var admin = await userManager.FindByNameAsync("ADMIN");
 
-            var admin = await userManager.FindByNameAsync(usuarioAdmin);
-
-            if (admin != null)
+            if (admin == null)
             {
-                await userManager.DeleteAsync(admin);
-            }
-
-            admin = new ApplicationUser
-            {
-                UserName = usuarioAdmin,
-                Email = emailAdmin,
-                EmailConfirmed = true,
-                DebeCambiarPassword = false,
-                SolicitoResetPassword = false,
-                FechaSolicitudReset = null
-            };
-
-            var resultadoAdmin = await userManager.CreateAsync(admin, passwordAdmin);
-
-            if (resultadoAdmin.Succeeded)
-            {
-                await userManager.AddToRoleAsync(admin, "Admin");
-            }
-
-            string legajoEmpleado = "1001";
-            string emailEmpleado = "empleado1001@gestionformacion.local";
-            string passwordEmpleado = "Empleado123!";
-
-            var empleado = await userManager.FindByNameAsync(legajoEmpleado);
-
-            if (empleado == null)
-            {
-                empleado = new ApplicationUser
+                admin = new ApplicationUser
                 {
-                    UserName = legajoEmpleado,
-                    Email = emailEmpleado,
+                    UserName = "ADMIN",
+                    Email = "admin@gestionformacion.local",
                     EmailConfirmed = true,
-                    DebeCambiarPassword = true
+                    DebeCambiarPassword = false,
+                    SolicitoResetPassword = false
                 };
 
-                await userManager.CreateAsync(empleado, passwordEmpleado);
-                await userManager.AddToRoleAsync(empleado, "Empleado");
+                var resultado = await userManager.CreateAsync(admin, "Admin123!");
+
+                if (resultado.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
+            }
+            else
+            {
+                if (!await userManager.IsInRoleAsync(admin, "Admin"))
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
             }
         }
     }
