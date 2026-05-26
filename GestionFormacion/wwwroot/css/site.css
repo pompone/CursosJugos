@@ -1,16 +1,13 @@
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
-}
-
-html {
-    position: relative;
-    min-height: 100%;
 }
 
 body {
@@ -58,21 +55,32 @@ body {
     text-align: center;
 }
 
-    .title-area h1 {
-        font-size: 1.45rem;
-        font-weight: 800;
-        margin: 0;
-        color: white;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.45);
-    }
+.title-area h1 {
+    font-size: 1.45rem;
+    font-weight: 800;
+    margin: 0;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.45);
+}
 
-    .title-area p {
-        margin: 0 0 7px;
-        color: white;
-        font-size: 0.9rem;
-    }
+.title-area p {
+    margin: 0 0 7px;
+    color: white;
+    font-size: 0.9rem;
+}
 
 /* MENÚ SUPERIOR */
+
+.menu-toggle-jugos {
+    display: none;
+    border: 1px solid rgba(255,255,255,0.8);
+    background: transparent;
+    color: white;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: 600;
+    margin: 10px auto;
+}
 
 .menu-jugos {
     display: flex;
@@ -81,23 +89,23 @@ body {
     gap: 6px;
 }
 
-    .menu-jugos a {
-        color: white;
-        text-decoration: none;
-        font-weight: 700;
-        padding: 7px 11px;
-        font-size: 0.85rem;
-        border: 1px solid rgba(255,255,255,0.75);
-        border-radius: 22px;
-        background: rgba(255,255,255,0.06);
-        transition: 0.25s;
-        white-space: nowrap;
-    }
+.menu-jugos a {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 7px 11px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255,255,255,0.75);
+    border-radius: 22px;
+    background: rgba(255,255,255,0.06);
+    transition: 0.25s;
+    white-space: nowrap;
+}
 
-        .menu-jugos a:hover {
-            background: white;
-            color: #004aad;
-        }
+.menu-jugos a:hover {
+    background: white;
+    color: #004aad;
+}
 
 /* PÁGINAS INTERNAS */
 
@@ -111,46 +119,46 @@ body {
     align-items: flex-start;
 }
 
-    .logout-area ul,
-    .logout-area .navbar-nav {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 5px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
+.logout-area ul,
+.logout-area .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
 
-    .logout-area .nav-link {
-        color: white !important;
-        padding: 0 !important;
-        font-weight: 500;
-        font-size: 0.82rem;
-    }
+.logout-area .nav-link {
+    color: white !important;
+    padding: 0 !important;
+    font-weight: 500;
+    font-size: 0.82rem;
+}
 
-    .logout-area form {
-        margin: 0;
-    }
+.logout-area form {
+    margin: 0;
+}
 
-    .logout-area button,
-    .logout-area .btn,
-    .logout-area input[type="submit"] {
-        background: #c92525 !important;
-        color: white !important;
-        border: 1px solid rgba(255,255,255,0.8) !important;
-        border-radius: 22px !important;
-        padding: 6px 15px !important;
-        font-size: 0.82rem !important;
-        font-weight: 700 !important;
-        line-height: 1.2;
-    }
+.logout-area button,
+.logout-area .btn,
+.logout-area input[type="submit"] {
+    background: #c92525 !important;
+    color: white !important;
+    border: 1px solid rgba(255,255,255,0.8) !important;
+    border-radius: 22px !important;
+    padding: 6px 15px !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    line-height: 1.2;
+}
 
-        .logout-area button:hover,
-        .logout-area .btn:hover,
-        .logout-area input[type="submit"]:hover {
-            background: #a71f1f !important;
-        }
+.logout-area button:hover,
+.logout-area .btn:hover,
+.logout-area input[type="submit"]:hover {
+    background: #a71f1f !important;
+}
 
 /* LOGIN */
 
@@ -205,22 +213,22 @@ body {
     box-shadow: 0 12px 32px rgba(0,0,0,0.24);
 }
 
-    .login-card h2 {
-        color: #0d47a1;
-        margin: 0 0 18px;
-        text-align: center;
-        font-size: 25px;
-    }
+.login-card h2 {
+    color: #0d47a1;
+    margin: 0 0 18px;
+    text-align: center;
+    font-size: 25px;
+}
 
-    .login-card label {
-        display: block;
-        margin: 13px 0 6px;
-        font-weight: bold;
-    }
+.login-card label {
+    display: block;
+    margin: 13px 0 6px;
+    font-weight: bold;
+}
 
-    .login-card input {
-        margin-bottom: 10px;
-    }
+.login-card input {
+    margin-bottom: 10px;
+}
 
 .boton {
     border: none;
@@ -239,10 +247,10 @@ body {
     color: white;
 }
 
-    .boton-principal:hover {
-        background: #0d47a1;
-        color: white;
-    }
+.boton-principal:hover {
+    background: #0d47a1;
+    color: white;
+}
 
 .ancho {
     width: 100%;
@@ -265,13 +273,13 @@ body {
     transition: all 0.25s ease;
 }
 
-    .login-card .boton-link:hover {
-        background: #ffffff;
-        color: #0d47a1;
-        border-color: #1976d2;
-        box-shadow: 0 6px 18px rgba(13, 71, 161, 0.18);
-        transform: translateY(-2px);
-    }
+.login-card .boton-link:hover {
+    background: #ffffff;
+    color: #0d47a1;
+    border-color: #1976d2;
+    box-shadow: 0 6px 18px rgba(13, 71, 161, 0.18);
+    transform: translateY(-2px);
+}
 
 /* DASHBOARD */
 
@@ -295,12 +303,12 @@ body {
     animation: dashboardFade 15s infinite;
 }
 
-    .hero-slide::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(13, 71, 161, 0.78), rgba(25, 118, 210, 0.45));
-    }
+.hero-slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(13, 71, 161, 0.78), rgba(25, 118, 210, 0.45));
+}
 
 .slide-1 {
     background-image: url("../img/fondo1.jpg");
@@ -318,25 +326,11 @@ body {
 }
 
 @keyframes dashboardFade {
-    0% {
-        opacity: 0;
-    }
-
-    8% {
-        opacity: 1;
-    }
-
-    30% {
-        opacity: 1;
-    }
-
-    38% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 0;
-    }
+    0% { opacity: 0; }
+    8% { opacity: 1; }
+    30% { opacity: 1; }
+    38% { opacity: 0; }
+    100% { opacity: 0; }
 }
 
 .hero-contenido {
@@ -350,18 +344,18 @@ body {
     color: white;
 }
 
-    .hero-contenido h1 {
-        font-size: 34px;
-        font-weight: 700;
-        margin-bottom: 8px;
-        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
-    }
+.hero-contenido h1 {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
 
-    .hero-contenido p {
-        font-size: 16px;
-        max-width: 620px;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-    }
+.hero-contenido p {
+    font-size: 16px;
+    max-width: 620px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
 
 /* BOTONES DASHBOARD */
 
@@ -390,25 +384,69 @@ body {
     transition: all 0.25s ease;
 }
 
-    .boton-menu:hover {
-        transform: translateY(-3px);
-        border-color: #1976d2;
-        color: #0d47a1;
-        box-shadow: 0 10px 24px rgba(13, 71, 161, 0.14);
+.boton-menu:hover {
+    transform: translateY(-3px);
+    border-color: #1976d2;
+    color: #0d47a1;
+    box-shadow: 0 10px 24px rgba(13, 71, 161, 0.14);
+}
+
+.boton-menu.boton-principal {
+    background: #1976d2;
+    color: white;
+    border-color: #1976d2;
+}
+
+.boton-menu.boton-principal:hover {
+    background: #0d47a1;
+    color: white;
+}
+
+/* RESPONSIVE COMPUTADORAS MEDIANAS */
+
+@media (max-width: 1300px) and (min-width: 993px) {
+    .topbar-jugos {
+        padding: 10px 20px;
     }
 
-    .boton-menu.boton-principal {
-        background: #1976d2;
-        color: white;
-        border-color: #1976d2;
+    .topbar-content {
+        grid-template-columns: 120px 1fr 145px;
+        gap: 8px;
     }
 
-        .boton-menu.boton-principal:hover {
-            background: #0d47a1;
-            color: white;
-        }
+    .logo-jugos {
+        max-width: 105px;
+    }
 
-/* RESPONSIVE */
+    .title-area h1 {
+        font-size: 1.35rem;
+    }
+
+    .title-area p {
+        font-size: 0.82rem;
+    }
+
+    .menu-jugos {
+        gap: 4px;
+        flex-wrap: nowrap;
+    }
+
+    .menu-jugos a {
+        font-size: 0.76rem;
+        padding: 6px 7px;
+        white-space: nowrap;
+    }
+
+    .logout-area .nav-link,
+    .logout-area button,
+    .logout-area .btn,
+    .logout-area input[type="submit"] {
+        font-size: 0.74rem !important;
+        padding: 5px 11px !important;
+    }
+}
+
+/* RESPONSIVE CELULAR / TABLET */
 
 @media (max-width: 992px) {
     .topbar-jugos {
@@ -430,22 +468,31 @@ body {
         align-items: center;
     }
 
-        .logout-area ul,
-        .logout-area .navbar-nav {
-            align-items: center;
-        }
+    .logout-area ul,
+    .logout-area .navbar-nav {
+        align-items: center;
+    }
+
+    .menu-toggle-jugos {
+        display: inline-block;
+    }
 
     .menu-jugos {
+        display: none;
         flex-direction: column;
         align-items: center;
     }
 
-        .menu-jugos a {
-            width: 100%;
-            max-width: 300px;
-            text-align: center;
-            white-space: normal;
-        }
+    .menu-jugos.abierto {
+        display: flex;
+    }
+
+    .menu-jugos a {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+        white-space: normal;
+    }
 
     .dashboard-hero {
         height: 210px;
@@ -456,13 +503,13 @@ body {
         padding: 25px;
     }
 
-        .hero-contenido h1 {
-            font-size: 28px;
-        }
+    .hero-contenido h1 {
+        font-size: 28px;
+    }
 
-        .hero-contenido p {
-            font-size: 15px;
-        }
+    .hero-contenido p {
+        font-size: 15px;
+    }
 
     .opciones-menu {
         grid-template-columns: 1fr;
@@ -503,60 +550,7 @@ body.home main {
     transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-    .brand-area a:hover {
-        transform: scale(1.04);
-        opacity: 0.9;
-    }
-
-.menu-toggle-jugos {
-    display: none;
-    border: 1px solid rgba(255,255,255,0.8);
-    background: transparent;
-    color: white;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-weight: 600;
-    margin: 10px auto;
-}
-
-@media (max-width: 1100px) {
-    .topbar-content {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .brand-area,
-    .title-area,
-    .logout-area {
-        width: 100%;
-        text-align: center;
-    }
-
-    .menu-toggle-jugos {
-        display: inline-block;
-    }
-
-    .menu-jugos {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    .menu-jugos.abierto {
-        display: flex;
-    }
-
-    .menu-jugos a {
-        width: 90%;
-        max-width: 320px;
-        text-align: center;
-    }
-
-    .logout-area {
-        justify-content: center;
-    }
+.brand-area a:hover {
+    transform: scale(1.04);
+    opacity: 0.9;
 }
