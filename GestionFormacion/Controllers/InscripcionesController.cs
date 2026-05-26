@@ -1,3 +1,4 @@
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -156,41 +157,30 @@ namespace GestionFormacion.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EmpleadoId,CursoId,Estado")] Inscripcion inscripcion)
+        public async Task<IActionResult> Edit(int id, int EmpleadoId, int CursoId, string Estado)
         {
-            if (id != inscripcion.Id) return NotFound();
-
             var inscripcionExistente = await _context.Inscripciones.FindAsync(id);
 
             if (inscripcionExistente == null)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    inscripcionExistente.EmpleadoId = inscripcion.EmpleadoId;
-                    inscripcionExistente.CursoId = inscripcion.CursoId;
-                    inscripcionExistente.Estado = inscripcion.Estado;
+                inscripcionExistente.EmpleadoId = EmpleadoId;
+                inscripcionExistente.CursoId = CursoId;
+                inscripcionExistente.Estado = Estado;
 
-                    _context.Update(inscripcionExistente);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InscripcionExists(inscripcion.Id))
-                        return NotFound();
-
-                    throw;
-                }
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InscripcionExists(id))
+                    return NotFound();
 
-            ViewData["EmpleadoId"] = new SelectList(_context.Empleados, "Id", "Apellido", inscripcion.EmpleadoId);
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "NombreCurso", inscripcion.CursoId);
-
-            return View(inscripcion);
+                throw;
+            }
         }
 
         [Authorize(Roles = "Admin")]
