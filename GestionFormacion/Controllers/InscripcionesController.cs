@@ -34,9 +34,7 @@ namespace GestionFormacion.Controllers
             }
 
             if (!string.IsNullOrWhiteSpace(estado))
-            {
                 consulta = consulta.Where(i => i.Estado == estado);
-            }
 
             if (!string.IsNullOrWhiteSpace(busqueda))
             {
@@ -75,16 +73,12 @@ namespace GestionFormacion.Controllers
         public async Task<IActionResult> Create(int? cursoId)
         {
             if (cursoId == null)
-            {
                 return RedirectToAction("Index", "Cursos");
-            }
 
             var curso = await _context.Cursos.FindAsync(cursoId);
 
             if (curso == null || !curso.Activo)
-            {
                 return NotFound();
-            }
 
             var inscripcion = new Inscripcion
             {
@@ -105,9 +99,7 @@ namespace GestionFormacion.Controllers
             string? legajo = User.Identity?.Name;
 
             if (string.IsNullOrEmpty(legajo))
-            {
                 return Unauthorized();
-            }
 
             var empleado = await _context.Empleados
                 .FirstOrDefaultAsync(e => e.Legajo == legajo && e.Activo);
@@ -121,9 +113,7 @@ namespace GestionFormacion.Controllers
             var curso = await _context.Cursos.FindAsync(inscripcion.CursoId);
 
             if (curso == null || !curso.Activo)
-            {
                 return NotFound();
-            }
 
             bool yaExiste = await _context.Inscripciones.AnyAsync(i =>
                 i.EmpleadoId == empleado.Id &&
@@ -166,26 +156,30 @@ namespace GestionFormacion.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EmpleadoId,CursoId,FechaInscripcion,Estado")] Inscripcion inscripcion)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,EmpleadoId,CursoId,Estado")] Inscripcion inscripcion)
         {
             if (id != inscripcion.Id) return NotFound();
+
+            var inscripcionExistente = await _context.Inscripciones.FindAsync(id);
+
+            if (inscripcionExistente == null)
+                return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    inscripcion.FechaInscripcion =
-                        DateTime.SpecifyKind(inscripcion.FechaInscripcion, DateTimeKind.Utc);
+                    inscripcionExistente.EmpleadoId = inscripcion.EmpleadoId;
+                    inscripcionExistente.CursoId = inscripcion.CursoId;
+                    inscripcionExistente.Estado = inscripcion.Estado;
 
-                    _context.Update(inscripcion);
+                    _context.Update(inscripcionExistente);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!InscripcionExists(inscripcion.Id))
-                    {
                         return NotFound();
-                    }
 
                     throw;
                 }
@@ -223,9 +217,7 @@ namespace GestionFormacion.Controllers
             var inscripcion = await _context.Inscripciones.FindAsync(id);
 
             if (inscripcion != null)
-            {
                 _context.Inscripciones.Remove(inscripcion);
-            }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -239,9 +231,7 @@ namespace GestionFormacion.Controllers
             var inscripcion = await _context.Inscripciones.FindAsync(id);
 
             if (inscripcion == null)
-            {
                 return NotFound();
-            }
 
             inscripcion.Estado = "Aprobada";
 
@@ -259,9 +249,7 @@ namespace GestionFormacion.Controllers
             var inscripcion = await _context.Inscripciones.FindAsync(id);
 
             if (inscripcion == null)
-            {
                 return NotFound();
-            }
 
             inscripcion.Estado = "Rechazada";
 
