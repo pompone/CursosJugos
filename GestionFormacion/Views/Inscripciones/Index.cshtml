@@ -87,7 +87,7 @@ else if (User.IsInRole("Empleado"))
             <tr>
                 <td>@item.Empleado.Apellido, @item.Empleado.Nombre</td>
                 <td>@item.Curso.NombreCurso</td>
-                <td>@item.FechaInscripcion.ToShortDateString()</td>
+                <td>@item.FechaInscripcion.ToString("dd/MM/yyyy")</td>
                 <td>
                     @if (item.Estado == "Pendiente")
                     {
