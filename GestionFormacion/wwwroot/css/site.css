@@ -72,7 +72,7 @@ body {
         font-size: 0.9rem;
     }
 
-/* MEN⁄ SUPERIOR */
+/* MEN√ö SUPERIOR */
 
 .menu-jugos {
     display: flex;
@@ -99,7 +99,7 @@ body {
             color: #004aad;
         }
 
-/* P¡GINAS INTERNAS */
+/* P√ÅGINAS INTERNAS */
 
 .pagina-interna {
     padding-top: 16px;
@@ -487,7 +487,7 @@ body.home main {
     padding-top: 0;
 }
 
-/* IDENTIFICACI”N SIMPLE DE USUARIO */
+/* IDENTIFICACI√ìN SIMPLE DE USUARIO */
 
 .usuario-simple {
     color: white !important;
@@ -508,3 +508,55 @@ body.home main {
         opacity: 0.9;
     }
 
+.menu-toggle-jugos {
+    display: none;
+    border: 1px solid rgba(255,255,255,0.8);
+    background: transparent;
+    color: white;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: 600;
+    margin: 10px auto;
+}
+
+@media (max-width: 1100px) {
+    .topbar-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .brand-area,
+    .title-area,
+    .logout-area {
+        width: 100%;
+        text-align: center;
+    }
+
+    .menu-toggle-jugos {
+        display: inline-block;
+    }
+
+    .menu-jugos {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .menu-jugos.abierto {
+        display: flex;
+    }
+
+    .menu-jugos a {
+        width: 90%;
+        max-width: 320px;
+        text-align: center;
+    }
+
+    .logout-area {
+        justify-content: center;
+    }
+}
